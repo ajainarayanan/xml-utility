@@ -1,5 +1,20 @@
 module.exports = xmlUtil;
 
+Object.query = function (a) {
+    'use strict';
+    if (a === null || typeof a === 'undefined') {
+        return null;
+    }
+    for (var _ = 1; _ < arguments.length; _++) {
+        var c = arguments[_];
+        a = a[c];
+        if (a === null || typeof a === 'undefined') {
+            return null;
+        }
+    }
+    return a;
+};
+
 function xmlUtil(xmlString) {
     this.xmlString = xmlString;
     // Frak IE8.Now everything supports window.DOMPARSER
