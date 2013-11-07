@@ -1,6 +1,6 @@
 {
-  "name": "xml-parser",
-  "repo": "aananthan/xml-parser",
+  "name": "xml-util",
+  "repo": "aananthan/xml-util",
   "description": "This is the generic xml parser used in Targetbuilder in LCM(for now)",
   "version": "0.0.1",
   "keywords": [],
