@@ -1,7 +1,7 @@
-
 # xml-parser
 
-  This is the generic xml parser used in Targetbuilder in LCM(for now)
+ This is a xml utility class that accepts a xmlstring and converts it into a json. 
+ It also helps in querying the xml(with the underlying json that was created).
 
 ## Installation
 
