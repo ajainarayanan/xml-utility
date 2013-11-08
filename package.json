@@ -1,0 +1,24 @@
+{
+  "name": "target",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "component-builder-handlebars": "~0.2.0",
+    "component-sass": "sankargorthi/component-sass#0.0.3",
+    "grunt-component-build": "~0.4.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-watch": "~0.5.2",
+    "mocha": "~1.9.0",
+    "should": "~1.2.0",
+    "load-grunt-tasks": "~0.1.0",
+    "time-grunt": "~0.1.1",
+    "lodash": "*",
+    "grunt-shell": "~0.4.0",
+    "component": "~0.17.6",
+    "express": "~3.4.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}

@@ -62,6 +62,7 @@ xmlUtil.prototype.xmlToJson = function(node) {
             ]
      */
 
+	console.log(node.attributes);
     var attrCount = node.attributes.length,
         childCount = node.childElementCount,
         name = node.nodeName,
@@ -101,7 +102,7 @@ xmlUtil.prototype.xmlToJson = function(node) {
      xmlUtil.query("Condition");
 
  */
-xmlUtil.prototype.query = function(a) {
+xmlUtil.prototype.find = function(a) {
     //From Object.query
     "use strict";
 
@@ -109,17 +110,22 @@ xmlUtil.prototype.query = function(a) {
         return null;
     }
     var length = arguments.length,
-        node,
+        node = [],
         i;
     if(typeof a === "object"){
-        node = a;
+        node = [a];
     } else{
-        node = this.xmlJson;
+        node = [this.xmlJson];
     }
     for( i=1; i< length; i++) {
-        node = this.findMatchingChild(node, arguments[i]);
-        if(!node) {
+        node = this.findMatchingChild(node[0], arguments[i]);
+        if(node.length === 0) {
             break;
+        }
+        if(node.length > 1 && i+1 === length) {
+            return node;
+        } else {
+            return null;
         }
     }
     return node;
@@ -127,13 +133,13 @@ xmlUtil.prototype.query = function(a) {
 
 xmlUtil.prototype.findMatchingChild = function(node, name) {
     var children = node.children,
-        matchingChild = null;
+        matchingChild = [];
     if(children.length > 0) {
         var i,
             len = children.length;
         for(i =0; i< len; i++) {
             if(Object.query(children, i, "name") === name) {
-                matchingChild = Object.query(children, i);
+                matchingChild.push(Object.query(children, i));
             }
         }
     }
