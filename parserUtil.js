@@ -62,7 +62,6 @@ xmlUtil.prototype.xmlToJson = function(node) {
             ]
      */
 
-	console.log(node.attributes);
     var attrCount = node.attributes.length,
         childCount = node.childElementCount,
         name = node.nodeName,
@@ -114,15 +113,30 @@ xmlUtil.prototype.find = function(a) {
         i;
     if(typeof a === "object"){
         node = [a];
+        i=1;
     } else{
         node = [this.xmlJson];
+        i=0;
     }
-    for( i=1; i< length; i++) {
-        node = this.findMatchingChild(node[0], arguments[i]);
+    for( ; i< length; i++) {
+        var args = arguments[i],
+            param = args.match(/\[(.*?)\]/),
+            name,
+            attr = null,
+            attrName, attrValue;
+        if(param) {
+            name = args.match(/[^\[\]]*/)[0];
+            attr = args.substring(args.indexOf("[") + 1, args.indexOf("]")).split("=");
+            attrName = attr[0];
+            attrValue = attr[1];
+        } else {
+            name = arguments[i];
+        }
+        node = this.findMatchingChild(node[0], name, attrName, attrValue );
         if(node.length === 0) {
             break;
         }
-        if(node.length > 1 && i+1 === length) {
+        if(node.length > 0 && i+1 === length) {
             return node;
         } else {
             return null;
@@ -131,15 +145,34 @@ xmlUtil.prototype.find = function(a) {
     return node;
 }
 
-xmlUtil.prototype.findMatchingChild = function(node, name) {
+xmlUtil.prototype.findMatchingChild = function(node, name, attrName, attrValue) {
     var children = node.children,
-        matchingChild = [];
+        matchingChild = [],
+        /* Couldn't find any more readable way of writing code. Will modify */
+        stateTable = {
+            true: {
+                false: "nameAloneValid",
+                true: "checkForAttr"
+            },
+            false: {
+                false: "noop",
+                true: "noop"
+            }
+        };
+
     if(children.length > 0) {
         var i,
             len = children.length;
         for(i =0; i< len; i++) {
-            if(Object.query(children, i, "name") === name) {
+            var isAttr = (attrName && attrValue)? true: false,
+                isName = (Object.query(children, i, "name") === name);
+            var result = stateTable[isName][isAttr];
+            if(result === "nameAloneValid") {
                 matchingChild.push(Object.query(children, i));
+            } else if (result === "checkForAttr") {
+                if(Object.query(children, i, "attributes")[attrName] === attrValue) {
+                    matchingChild.push(Object.query(children, i));
+                }
             }
         }
     }
